@@ -14,9 +14,8 @@
 
 #Used for cleaning up music files in linux storage
 #
-#TODO: Set it so that 'extract' will look for zip files and other music files
-#   and ignore other files
-#
+#TODO: Create test cases
+
 #TODO: Create a 'help' page of some sort
 #
 #TODO: Set a way to get files from another directory
@@ -25,7 +24,7 @@
 #      from download direc.
 #
 #TODO Set way to rename a file based on track number, song name, artist and
-#     album name 
+#     album name, good idea? 
 #     EX: num_title album artist.mp3
 
 import os
@@ -40,11 +39,11 @@ def moveFiles(rootDir):
     """
 
     homedir = os.environ['HOME']
-
+    albumDirec = 'AlbumCoverImages'
     #Check if a directory exists
-    if not os.path.isdir(os.path.join(homedir, 'Pictures', 'albumCoverImages')):
-        print('albumCoverImages not found, trying to make...')
-        os.makedirs(os.path.join(homedir, 'Pictures', 'albumCoverImages'))
+    if not os.path.isdir(os.path.join(homedir, 'Pictures', albumDirec)):
+        print('AlbumCoverImages not found, trying to make...')
+        os.makedirs(os.path.join(homedir, 'Pictures', albumDirec))
         
     for root, dirs, files in os.walk(rootDir, topdown=False):
         #print('testtest')
@@ -55,21 +54,21 @@ def moveFiles(rootDir):
             #For some bullshit reason or statments won't work here, have to
             #   parse this out to elif statements, ughhhh...
             
-            if '.jpg' in name:            
-                os.rename(os.path.join(root, name), os.path.join(homedir, 'Pictures', 'albumCoverImages', name))
-                print('{0} moved to {1}!'.format(name, os.path.join(homedir, 'Pictures', 'albumConverImages')))
+            if '.jpg' in name:
+                os.rename(os.path.join(root, name), os.path.join(homedir, 'Pictures', albumDirec, name))
+                print('{0} moved to {1}!'.format(name, os.path.join(homedir, 'Pictures', albumDirec)))
             
             elif '.png' in name:
-                os.rename(os.path.join(root, name), os.path.join(homedir, 'Pictures', 'albumCoverImages', name))
-                print('{0} moved to {1}!'.format(name, os.path.join(homedir, 'Pictures', 'albumCoverImages', name)))
+                os.rename(os.path.join(root, name), os.path.join(homedir, 'Pictures', albumDirec, name))
+                print('{0} moved to {1}!'.format(name, os.path.join(homedir, 'Pictures', albumDirec, name)))
             
             elif '.gif' in name:
-                os.rename(os.path.join(root, name), os.path.join(homedir, 'Pictures', 'albumCoverImages', name))
-                print('{0} moved to {1}!'.format(name, os.path.join(homedir, 'Pictures', 'albumCoverImages', name)))
+                os.rename(os.path.join(root, name), os.path.join(homedir, 'Pictures', albumDirec, name))
+                print('{0} moved to {1}!'.format(name, os.path.join(homedir, 'Pictures', albumDirec, name)))
             
             elif '.pdf' in name:
-                os.rename(os.path.join(root, name), os.path.join(homedir, 'Pictures', 'albumCoverImages', name))
-                print('{0} moved to {1}!'.format(name, os.path.join(homedir, 'Pictures', 'albumCoverImages', name)))
+                os.rename(os.path.join(root, name), os.path.join(homedir, 'Pictures', albumDirec, name))
+                print('{0} moved to {1}!'.format(name, os.path.join(homedir, 'Pictures', albumDirec, name)))
 
             else:
                 try:
@@ -151,7 +150,8 @@ def extractZipFiles(rootDir, zipDir):
         for name in files:
            
             zipFiles = os.path.join(root, name)
-           #TODO: Check file extension here
+           
+           #Check file extension here
             if ".zip" not in zipFiles:
                 continue
             
