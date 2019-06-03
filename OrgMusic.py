@@ -151,44 +151,48 @@ def extractZipFiles(rootDir, zipDir):
         for name in files:
            
             zipFiles = os.path.join(root, name)
-           #TODO: Check file extension here 
-            zipPath = zipfile.ZipFile(zipFiles, 'r')
-            #print(zipPath)
+           #TODO: Check file extension here
+            if ".zip" not in zipFiles:
+                continue
+            
+            else:
+                zipPath = zipfile.ZipFile(zipFiles, 'r')
+                #print(zipPath) 
         
-            filesInZip = zipPath.namelist()
-            i = 0    
-            for i in range(len(filesInZip)):
-                #print(filesInZip[i])
-                #print(zipPath.getinfo(filesInZip[i]))
+                filesInZip = zipPath.namelist()
+                i = 0    
+                for i in range(len(filesInZip)):
+                    #print(filesInZip[i])
+                    #print(zipPath.getinfo(filesInZip[i]))
                 
-                if ".mp3" in filesInZip[i]:
-                    zipPath.extract(filesInZip[i], rootDir)
-                    print("{0} extracted to {1}".format(filesInZip[i], rootDir))
+                    if ".mp3" in filesInZip[i]:
+                        zipPath.extract(filesInZip[i], rootDir)
+                        print("{0} extracted to {1}".format(filesInZip[i], rootDir))
 
-                elif ".m4a" in filesInZip[i]:
-                    zipPath.extract(filesInZip[i], rootDir)
-                    print("{0} extracted to {1}".format(filesInZip[i], rootDir))
+                    elif ".m4a" in filesInZip[i]:
+                        zipPath.extract(filesInZip[i], rootDir)
+                        print("{0} extracted to {1}".format(filesInZip[i], rootDir))
 
-                elif ".mp4" in filesInZip[i]:
-                    zipPath.extract(filesInZip[i], rootDir)
-                    print("{0} extracted to {1}".format(filesInZip[i], rootDir))
+                    elif ".mp4" in filesInZip[i]:
+                        zipPath.extract(filesInZip[i], rootDir)
+                        print("{0} extracted to {1}".format(filesInZip[i], rootDir))
 
-                elif ".png" in filesInZip[i]:
-                    zipPath.extract(filesInZip[i], rootDir)
-                    print("{0} extracted to {1}".format(filesInZip[i], rootDir))
+                    elif ".png" in filesInZip[i]:
+                        zipPath.extract(filesInZip[i], rootDir)
+                        print("{0} extracted to {1}".format(filesInZip[i], rootDir))
 
-                elif ".jpg" in filesInZip[i]:
-                    zipPath.extract(filesInZip[i], rootDir)
-                    print("{0} extracted to {1}".format(filesInZip[i], rootDir))
+                    elif ".jpg" in filesInZip[i]:
+                        zipPath.extract(filesInZip[i], rootDir)
+                        print("{0} extracted to {1}".format(filesInZip[i], rootDir))
                 
-                elif ".pdf" in filesInZip[i]:
-                    zipPath.extract(filesInZip[i], rootDir)
-                    print("{0} extracted to {1}".format(filesInZip[i], rootDir))
+                    elif ".pdf" in filesInZip[i]:
+                        zipPath.extract(filesInZip[i], rootDir)
+                        print("{0} extracted to {1}".format(filesInZip[i], rootDir))
 
-                else:
-                    print("No media found in zip file {0}".format(name))
+                    else:
+                        print("No media found in zip file {0}".format(name))
                 
-            zipPath.close()
+                zipPath.close()
 
 #TODO: Rethink this function. Is'nt checking for the music zip folder
 #      redundant?
