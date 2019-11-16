@@ -275,19 +275,19 @@ def edMusFiles(rootDir):
 
 if __name__ == '__main__':
     
-    if (sys.argv[1] == "edit"): 
+    if (sys.argv[1] == "-edit"): 
         print("Editing and moving files/directories\n...\n...")
         moveFiles(sys.argv[2])
         edMusFiles(sys.argv[2])
         print("...\n...\nDone!")
 
-    elif (sys.argv[1] == "clean"):
+    elif (sys.argv[1] == "-clean"):
         print("Cleaning empty directories\n...\n...")
         cleanDirecs(sys.argv[2])
         print("...\n...\nDone!")
 
 
-    elif (sys.argv[1] == "extract"):
+    elif (sys.argv[1] == "-extract"):
         print("Extracting files from zip folders\n...\n...")
         extractZipFiles(sys.argv[2], sys.argv[3])
         print("Moving zip files\n...\n...")
@@ -295,7 +295,7 @@ if __name__ == '__main__':
         print("...\n...\nDone!")
     
    
-    elif (sys.argv[1] == "help"):
+    elif (sys.argv[1] == "-help"):
         print("\n\n")
         print("\n")
 
