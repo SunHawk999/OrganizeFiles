@@ -1,10 +1,10 @@
 #!/bin/bash
 
 
-musDirectory="$1" 	#Save the first argument as "$musDirectory"
-curDirectory="$(pwd)" #Save the current working directory
+MUSICDIREC="$1" 	#Save the first argument as "$musDirectory" 
+CURREDIREC="$(pwd)" #Save the current working directory
 
-cd $musDirectory
+cd $MUSICDIREC
 
 for file in *.mp3 ; do
 	#echo "$file"
@@ -15,21 +15,21 @@ for file in *.mp3 ; do
 	# Subshell for scoping
 	(
 	
-	artistName="$(mp3info -p "%a" "$file")"
-	albumName="$(mp3info -p "%l" "$file")"
+	artist_name="$(mp3info -p "%a" "$file")"
+	album_name="$(mp3info -p "%l" "$file")"
 
 	#echo $albumName	
 	# Perform a check if the artist directory exists
-	if [[ -d  "$artistName/" ]] ; then
-		echo "$artistName" directory exists! Attempting to move "$file" into "$artistName"/
-		mv "$file" "$artistName/"
+	if [[ -d  "$artist_name/" ]] ; then
+		echo "$artist_name" directory exists! Attempting to move "$file" into "$artist_name"/
+		mv "$file" "$artist_name/"
 
 
 	else 
-		echo "$artistName" does not exist! Attempting to make directory...
-		mkdir "$artistName"
-		echo "$artistName"/ made! Moving "$file" into "$artistName"/
-		mv "$file" "$artistName/"
+		echo "$artist_name" does not exist! Attempting to make directory...
+		mkdir "$artist_name"
+		echo "$artist_name"/ made! Moving "$file" into "$artist_name"/
+		mv "$file" "$artist_name/"
 		
 		
 	fi
@@ -37,6 +37,6 @@ for file in *.mp3 ; do
 		
 done
 
-cd $curDirectory
+cd $CURREDIREC
 
 
