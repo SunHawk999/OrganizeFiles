@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#TODO: Need to rethink how files and directories are going to be organized...
-
 #Create some functions here to declutter code
 # $1 will be file name
 # $2 artist_name or album_name depending on particular function
@@ -23,7 +21,6 @@ artist_does_not_exist () {
 	mv "$1" "$2/"
 }
 
-#This might not work, hasn't been tested yet...
 artist_album_does_not_exist () {
 	echo "$1"/"$2" does not exist! Attempting to make directory...
 	cd "$MUSICDIREC"/"$1" 	
@@ -32,13 +29,12 @@ artist_album_does_not_exist () {
 	mv "$1" "$2/"	
 }
 
-look_for_mp3_files_artist () {
+look_for_mp3_files_artist () {	
 
 	for file in *.mp3 ; do	
 	
 		artist_name="$(mp3info -p "%a" "$file")"
-		
-		# Perform a check if the artist directory exists
+		 
 		if [[ -d  "$artist_name/" ]] ; then
 			artist_exists "$file" "$artist_name"
 		
@@ -73,9 +69,7 @@ look_for_directories () {
 	
 	for direc in */ ; do
 		[ -d "${direc}" ] || continue		# if not a directory, skip
-		#echo "${direc}"
 		cd "${direc}"
-		#echo $pwd
 		look_for_mp3_files_album 
 		cd ./..
 		
@@ -84,6 +78,10 @@ look_for_directories () {
 
 MUSICDIREC="$1"				#Save the first argument as "$MUSICDIREC" 
 CURREDIREC="$(pwd)"		#Save the current working directory
+
+#When a pattern matches nothing "Disappears", rather than being treated 
+#as a literal string
+shopt -s nullglob
 
 cd $MUSICDIREC
 
