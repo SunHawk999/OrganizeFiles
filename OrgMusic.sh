@@ -76,12 +76,31 @@ look_for_directories () {
 	done
 }
 
+extract_zip_files () {
+
+	for file in *.zip ; do
+		
+		echo Looking for files in $ZIPFIDIREC ...
+
+		unzip "$file" -d $MUSICDIREC 
+
+	done	
+}
+
 MUSICDIREC="$1"				#Save the first argument as "$MUSICDIREC" 
+ZIPFIDIREC="$2"				#Arg for zip file directory
 CURREDIREC="$(pwd)"		#Save the current working directory
 
 #When a pattern matches nothing "Disappears", rather than being treated 
 #as a literal string
 shopt -s nullglob
+
+#Have the functions to unpack and move files from another directory in a zip file here
+if [ -d $ZIPFIDIREC ]; then
+	cd $ZIPFIDIREC 
+	extract_zip_files
+	cd $MUSICDIREC
+fi
 
 cd $MUSICDIREC
 
