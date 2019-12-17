@@ -28,14 +28,14 @@ artist_album_does_not_exist () {
 	echo "$1"/"$2" does not exist! Attempting to make directory...
 	cd "$MUSICDIREC"/"$1" 	
 	mkdir "$2"
-	cd "$MUSICDIREC" 
+	echo "$2"/ made! Moving "$1" into "$2"/
+	mv "$1" "$2/"	
 }
 
 look_for_mp3_files_artist () {
 
 	for file in *.mp3 ; do	
-		# Subshell for scoping
-		(
+	
 		artist_name="$(mp3info -p "%a" "$file")"
 		
 		# Perform a check if the artist directory exists
@@ -48,16 +48,14 @@ look_for_mp3_files_artist () {
 			artist_does_not_exist "$file" "$artist_name"
 		
 		fi
-		)
-		
+			
 	done
 }
 
 look_for_mp3_files_album () {
 	
 	for file in *.mp3 ; do
-		#Subshell for scoping
-		(
+
 		album_name="$(mp3info -p "%l" "$file")"
 			
 		if [[ -d "$album_name/" ]] ; then
@@ -65,9 +63,8 @@ look_for_mp3_files_album () {
 	
 		elif [[ ! -d "$album_name/" ]] ; then
 			artist_album_does_not_exist "$file" "$album_name"
-
-		fi 
-		)
+		
+		fi	
 
 	done
 } 
