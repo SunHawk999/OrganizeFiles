@@ -32,9 +32,9 @@ artist_album_does_not_exist () {
 look_for_mp3_files_artist () {	
 
 	for file in *.mp3 ; do	
-	
-		artist_name="$(mp3info -p "%a" "$file")"
-		 
+		
+		artist_name="$(ffprobe -loglevel error -show_entries format_tags=artist -of default=noprint_wrappers=1:nokey=1 "$file")"		
+ 
 		if [[ -d  "$artist_name/" ]] ; then
 			artist_exists "$file" "$artist_name"
 		
@@ -51,9 +51,9 @@ look_for_mp3_files_artist () {
 look_for_mp3_files_album () {
 	
 	for file in *.mp3 ; do
-
-		album_name="$(mp3info -p "%l" "$file")"
-			
+	
+		album_name="$(ffprobe -loglevel error -show_entries format_tags=album -of default=noprint_wrappers=1:nokey=1 "$file")"
+	
 		if [[ -d "$album_name/" ]] ; then
 			artist_album_exists "$file" "$album_name"
 	
@@ -104,14 +104,14 @@ fi
 
 cd $MUSICDIREC
 
-echo $MUSICDIREC 
+#echo $MUSICDIREC 
 
 #look for mp3 files first
-echo Looking for stray mp3 files...
+echo Looking for stray mp3 files...\n
 look_for_mp3_files_artist
 
 #move onto directory search
-echo Now looking through directories...
+echo Now looking through directories...\n
 look_for_directories
 
 cd $CURREDIREC
