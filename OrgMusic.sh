@@ -30,36 +30,26 @@ artist_album_does_not_exist () {
 
 look_for_mp3_files_artist () {	
 
-	for file in *.mp3 ; do	
-		
-		artist_name="$(ffprobe -loglevel error -show_entries format_tags=artist -of default=noprint_wrappers=1:nokey=1 "$file")"		
- 
+	for file in *.mp3 ; do		
+		artist_name="$(ffprobe -loglevel error -show_entries format_tags=artist -of default=noprint_wrappers=1:nokey=1 "$file")"		 
 		if [[ -d  "$artist_name/" ]] ; then
-			artist_exists "$file" "$artist_name"
-		
-			#change directory to artist
-		
+			artist_exists "$file" "$artist_name"	
+		#change directory to artist	
 		elif [[ ! -d "$artist_name/" ]] ; then 
-			artist_does_not_exist "$file" "$artist_name"
-		
-		fi
-			
+			artist_does_not_exist "$file" "$artist_name"	
+		fi	
 	done
 }
 
 look_for_mp3_files_album () {
 	
-	for file in *.mp3 ; do
-	
+	for file in *.mp3 ; do	
 		album_name="$(ffprobe -loglevel error -show_entries format_tags=album -of default=noprint_wrappers=1:nokey=1 "$file")"
 		if [[ -d "$album_name/" ]] ; then
-			artist_album_exists "$file" "$album_name"
-	
+			artist_album_exists "$file" "$album_name"	
 		elif [[ ! -d "$album_name/" ]] ; then
-			artist_album_does_not_exist "$file" "$album_name"
-		
+			artist_album_does_not_exist "$file" "$album_name"	
 		fi	
-
 	done
 } 
 
@@ -69,33 +59,38 @@ look_for_directories () {
 		[ -d "${direc}" ] || continue		# if not a directory, skip
 		cd "${direc}"
 		look_for_mp3_files_album 
-		cd ./..
-		
+		cd ./..	
 	done
 }
 
 extract_zip_files () {
 
-	for file in *.zip ; do
-		
+	for file in *.zip ; do	
 		printf "Looking for files in $ZIPFIDIREC ...\n"
-
 		unzip "$file" -d $MUSICDIREC 
-
 	done	
 }
 
-move_zip_files () {
-	
+remove_zip_files () {
+
+	printf "Removing zip files...\n\n"	
 	for file in *.zip ; do
-		
-		printf "Moving zip files...\n\n"
+		printf "Removing '$file'\n"		
+		rm "$file"
 	done
 }
 
 move_cover_images () {
-	printf "move cover images...\n\n"
 
+	if [ ! -d "/home/$USER/Pictures/AlbumImages/" ] ; then 
+		printf "AlbumImages/ directory does not exist, creating...\n"
+		mkdir "/home/$USER/Pictures/AlbumImages/"	
+	fi
+
+	for file in *.png ; do
+		printf "Moving $file to /home/$USER/Pictures/AlbumImages/\n"
+		mv "$file" "/home/$USER/Pictures/AlbumImages/"		
+	done
 }
 
 MUSICDIREC="$1"				#Save the first argument as "$MUSICDIREC" 
@@ -110,7 +105,8 @@ shopt -s nullglob
 if [ -d $ZIPFIDIREC ]; then
 	cd $ZIPFIDIREC 
 	printf "Looking for zip files to extract mp3 files...\n\n"
-	extract_zip_files	
+	extract_zip_files
+	remove_zip_files	
 fi
 
 cd $MUSICDIREC
@@ -124,5 +120,9 @@ look_for_mp3_files_artist
 #move onto directory search
 printf "\nNow looking through directories...\n\n"
 look_for_directories
+
+#move cover images that might have been extracted from zip files
+printf "move cover images...\n\n"
+move_cover_images	
 
 cd $CURREDIREC
