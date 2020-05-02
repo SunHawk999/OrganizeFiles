@@ -14,8 +14,7 @@
 copy_music_file () {
     
     for file in *.m* ; do
-        printf "${file}"
-        printf "Copying ${file} to ${DESTINATIONDIREC}"
+        printf "Copying ${file} to ${DESTINATIONDIREC}\n"
         cp "$file" "$DESTINATIONDIREC"
     done
 }
