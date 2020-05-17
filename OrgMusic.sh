@@ -28,9 +28,9 @@ artist_album_does_not_exist () {
 	mv "$1" "$2/"	
 }
 
-look_for_mp3_files_artist () {	
+look_for_mus_files_artist () {	
 
-	for file in *.mp3 ; do		
+	for file in *.m* ; do		
 		artist_name="$(ffprobe -loglevel error -show_entries format_tags=artist -of default=noprint_wrappers=1:nokey=1 "$file")"		 
 		if [[ -d  "$artist_name/" ]] ; then
 			artist_exists "$file" "$artist_name"	
@@ -41,9 +41,9 @@ look_for_mp3_files_artist () {
 	done
 }
 
-look_for_mp3_files_album () {
+look_for_mus_files_album () {
 	
-	for file in *.mp3 ; do	
+	for file in *.m* ; do	
 		album_name="$(ffprobe -loglevel error -show_entries format_tags=album -of default=noprint_wrappers=1:nokey=1 "$file")"
 		if [[ -d "$album_name/" ]] ; then
 			artist_album_exists "$file" "$album_name"	
@@ -58,7 +58,7 @@ look_for_directories () {
 	for direc in */ ; do
 		[ -d "${direc}" ] || continue		# if not a directory, skip
 		cd "${direc}"
-		look_for_mp3_files_album 
+		look_for_mus_files_album 
 		cd ./..	
 	done
 }
@@ -115,7 +115,7 @@ cd $MUSICDIREC
 
 #look for mp3 files first
 printf "Looking for stray mp3 files...\n\n"
-look_for_mp3_files_artist
+look_for_mus_files_artist
 
 #move onto directory search
 printf "\nNow looking through directories...\n\n"
